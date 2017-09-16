@@ -10,6 +10,9 @@ var winston = require('winston');
 
 var argv = require('minimist')(process.argv.slice(2));
 
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {'timestamp':true});
+
 winston.level = 'info';
 sendadr = null;
 apiurl = 'https://api.arknode.net/peer/transactions';
@@ -39,6 +42,10 @@ winston.log('debug',"conf object:", global.jsonconf);
 max=global.jsonconf.accounts[0];
 max.balance=0;
 maxcount = 0;
+nethash = null;
+
+option_tries=3;
+option_delay=5000;
 
 var tx_cb = function(error, response, body) {
   if (error != null) {
@@ -46,6 +53,22 @@ var tx_cb = function(error, response, body) {
   } else {
         winston.log('info',"Transaction sent", body);
   }
+};
+
+var transaction2network_cb = function(transaction, tryno) {
+	winston.log('info',"Try: "+tryno+" to send transaction");
+	request({
+	  url: apiurl,
+	  json: { transactions: [transaction] },
+	  method: 'POST',
+	  headers: {
+	    'Content-Type': 'application/json',
+	    'os': 'linux3.2.0-4-amd64',
+	    'version': '0.3.0',
+	    'port': 1,
+	    'nethash': nethash
+	  }
+	}, tx_cb);
 };
 
 var nethash_cb = function(error, response, body) {
@@ -69,18 +92,10 @@ var nethash_cb = function(error, response, body) {
 
         winston.log('info',"Transaction: "+JSON.stringify(transaction, null, 4) );
 
-        request({
-          url: apiurl,
-          json: { transactions: [transaction] },
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'os': 'linux3.2.0-4-amd64',
-            'version': '0.3.0',
-            'port': 1,
-            'nethash': nethash
-          }
-        }, tx_cb);
+	for (var c = 0; c < option_tries; c++) {
+		setTimeout(transaction2network_cb.bind(null, transaction,c), c*option_delay);
+	}
+
 };
 
 var sendtoaddress = function() {
