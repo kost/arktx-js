@@ -15,7 +15,8 @@ winston.add(winston.transports.Console, {'timestamp':true});
 
 winston.level = 'info';
 sendadr = null;
-apiurl = 'https://api.arknode.net/peer/transactions';
+apiurl = 'https://api.arknode.net';
+txapiurl = apiurl+"/peer/transactions';
 txfee = parseInt(10000000,10); // TxFee is 0.1
 ponder = Math.pow(10, 8);
 amounttx = null;
@@ -60,7 +61,7 @@ var tx_cb = function(error, response, body) {
 var transaction2network_cb = function(transaction, tryno) {
 	winston.log('info',"Try: "+tryno+" to send transaction");
 	request({
-	  url: apiurl,
+	  url: txapiurl,
 	  json: { transactions: [transaction] },
 	  method: 'POST',
 	  headers: {
@@ -102,7 +103,7 @@ var nethash_cb = function(error, response, body) {
 
 var sendtoaddress = function() {
 	request({
-	  url: apiurl,
+	  url: txapiurl,
 	  json: { },
 	  method: 'POST',
 	  headers: {
@@ -176,6 +177,6 @@ var getbalances = function (i, error, response, body) {
 
 winston.log('debug', "Getting balances")
 for (var i = 0; i < global.jsonconf.accounts.length; i++) {
-	request('https://api.arknode.net/api/accounts/getBalance?address='+global.jsonconf.accounts[i].address, getbalances.bind(null, i));
+	request(apiurl+"/api/accounts/getBalance?address='+global.jsonconf.accounts[i].address, getbalances.bind(null, i));
 }
 
