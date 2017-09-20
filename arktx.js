@@ -177,6 +177,6 @@ var getbalances = function (i, error, response, body) {
 
 winston.log('debug', "Getting balances")
 for (var i = 0; i < global.jsonconf.accounts.length; i++) {
-	request(apiurl+"/api/accounts/getBalance?address='+global.jsonconf.accounts[i].address, getbalances.bind(null, i));
+	request(apiurl+'/api/accounts/getBalance?address='+global.jsonconf.accounts[i].address, getbalances.bind(null, i));
 }
 
