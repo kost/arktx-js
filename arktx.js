@@ -19,6 +19,8 @@ apiurl = 'https://api.arknode.net/peer/transactions';
 txfee = parseInt(10000000,10); // TxFee is 0.1
 ponder = Math.pow(10, 8);
 amounttx = null;
+clientversion='0.3.0';
+clientos='linux3.2.0-4-amd64';
 
 if (argv.hasOwnProperty('l')) {
 	winston.level = argv['l'];
@@ -63,8 +65,8 @@ var transaction2network_cb = function(transaction, tryno) {
 	  method: 'POST',
 	  headers: {
 	    'Content-Type': 'application/json',
-	    'os': 'linux3.2.0-4-amd64',
-	    'version': '0.3.0',
+	    'os': clientos,
+	    'version': clientversion,
 	    'port': 1,
 	    'nethash': nethash
 	  }
@@ -105,8 +107,8 @@ var sendtoaddress = function() {
 	  method: 'POST',
 	  headers: {
 	    'Content-Type': 'application/json',
-	    'os': 'linux3.2.0-4-amd64',
-	    'version': '0.3.0',
+	    'os': clientos,
+	    'version': clientversion,
 	    'port': 1,
 	    'nethash': "wrongnethash"
 	  }
