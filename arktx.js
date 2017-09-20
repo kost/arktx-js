@@ -16,7 +16,7 @@ winston.add(winston.transports.Console, {'timestamp':true});
 winston.level = 'info';
 sendadr = null;
 apiurl = 'https://api.arknode.net';
-txapiurl = apiurl+"/peer/transactions';
+txapiurl = apiurl+'/peer/transactions';
 txfee = parseInt(10000000,10); // TxFee is 0.1
 ponder = Math.pow(10, 8);
 amounttx = null;
