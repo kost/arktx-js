@@ -1,6 +1,6 @@
 {
   "name": "arktx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Send ARK transactions",
   "repository": "https://github.com/kost/arktx-js",
   "main": "arktx.js",
